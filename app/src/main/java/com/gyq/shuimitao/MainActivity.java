@@ -1,6 +1,9 @@
 package com.gyq.shuimitao;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +11,13 @@ import android.os.Bundle;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import android.Manifest;
+import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -49,6 +55,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
@@ -140,5 +148,42 @@ public class MainActivity extends AppCompatActivity {
         }
         return ret;
     }
-
+}
+class Gongju {
+     public void ShowMsg(Context context, String title, String msg, boolean cancel, int type){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);    //设置对话框标题
+        builder.setIcon(android.R.drawable.btn_star);   //设置对话框标题前的图标
+        final TextView tv = new TextView(context);
+        //tv.setBackgroundResource(R.drawable.fengmian);
+        tv.setTextSize(25);
+        tv.setTextColor(Color.BLACK);
+        tv.setText(msg);
+        tv.setGravity(Gravity.CENTER_VERTICAL| Gravity.CENTER_HORIZONTAL);
+        tv.setMovementMethod(ScrollingMovementMethod.getInstance());
+        builder.setView(tv);
+        tv.setTextColor(Color.RED);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        if(cancel)
+            builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        builder.setCancelable(true);    //设置按钮是否可以按返回键取消,false则不可以取消
+        AlertDialog dialog = builder.create();  //创建对话框
+        dialog.setCanceledOnTouchOutside(true); //设置弹出框失去焦点是否隐藏,即点击屏蔽其它地方是否隐藏
+        dialog.show();
+    }
+    public String CurTime(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
 }
