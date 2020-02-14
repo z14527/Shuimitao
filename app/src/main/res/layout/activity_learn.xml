@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id = "@+id/spell"
+        android:layout_width="match_parent"
+        android:background="@drawable/upbackground"
+        android:textAlignment="center"
+        android:textColor="#fff00000"
+        android:layout_height="160sp" />
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:layout_weight="1">
+    </ListView>
+    <LinearLayout
+        android:id="@+id/LinearLayout03"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_forword"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="160dip"
+            android:layout_marginLeft="100dp"
+            android:layout_height="60dp"
+            android:text="下一个"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>
+

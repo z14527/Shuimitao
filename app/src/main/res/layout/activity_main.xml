@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gyq.shuimitao.LearnActivity">
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp" >
+        <ImageView
+            android:id="@+id/homeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cropToPadding="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fm" />
+    </LinearLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:divider="#00000000"
+            android:dividerHeight="0dip">
+            <ImageButton
+                android:id="@+id/imgLearn"
+                android:layout_width="match_parent"
+                android:layout_marginTop="85pt"
+                android:layout_height="50pt"
+                android:layout_weight="1"
+                android:background="@drawable/learn" />
+            <ImageButton
+                android:id="@+id/imgTest"
+                android:layout_width="match_parent"
+                android:layout_marginTop="85pt"
+                android:layout_height="50pt"
+                android:layout_weight="1"
+                android:background="@drawable/test" />
+         </TableRow>
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

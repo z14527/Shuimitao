@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Shuimitao</string>
+    <string name="main_activity_button1_name">学习</string>
+    <string name="main_activity_button2_name">测验</string>
+    <string name="download_db">下载单词库</string>
+    <string name="data_url">http://z14527.gz01.bdysite.com/data/KET.db</string>
+</resources>
