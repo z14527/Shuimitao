@@ -41,12 +41,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/learn" />
             <ImageButton
-                android:id="@+id/imgTest"
+                android:id="@+id/imgStatics"
                 android:layout_width="match_parent"
                 android:layout_marginTop="85pt"
                 android:layout_height="50pt"
                 android:layout_weight="1"
-                android:background="@drawable/test" />
+                android:background="@drawable/statics" />
          </TableRow>
     </TableLayout>
 </android.support.constraint.ConstraintLayout>

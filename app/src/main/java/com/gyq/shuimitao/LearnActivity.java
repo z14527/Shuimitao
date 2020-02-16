@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sdsmdg.tastytoast.TastyToast;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -52,6 +54,10 @@ public class LearnActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
+        if(MainActivity.mode==1)
+            setTitle("Shuimitao（测试）");
+        else
+            setTitle("Shuimitao");
         mListView = (ListView) findViewById(R.id.listView);
         mTextView = (TextView) findViewById(R.id.spell);
         mTextView.setOnClickListener(new View.OnClickListener(){
@@ -256,7 +262,7 @@ public class LearnActivity extends AppCompatActivity {
                         if(info1==0) {
                             mydb.update(id,fn[i],is_success);
                             mydb.update(id,fn[i+1],test_time);
-                            String nlt = NextLearningTime(test_time,0,0,
+                            String nlt = new Gongju().NextLearningTime(test_time,0,0,
                                     0,0,5);
                             mydb.update(id,"ltn",nlt);
                             break;
@@ -271,25 +277,25 @@ public class LearnActivity extends AppCompatActivity {
                                 mydb.update(id, fn[k], test_time);
                                 String nlt = "";
                                 if(k==2)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,0,0,30);
                                 else if(k==3)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,0,12,0);
                                 else if(k==4)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,1,0,0);
                                 else if(k==5)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,2,0,0);
                                 else if(k==6)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,4,0,0);
                                 else if(k==7)
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,7,0,0);
                                 else
-                                    nlt = NextLearningTime(test_time,0,
+                                    nlt = new Gongju().NextLearningTime(test_time,0,
                                             0,15,0,0);
                                 mydb.update(id,"ltn",nlt);
                             }
@@ -303,6 +309,18 @@ public class LearnActivity extends AppCompatActivity {
             Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
         }
     }
+    public void InsertDbStatics(String id,String test_time,
+                                 String is_success){
+        mydb =new DatabaseHelper(this);
+        String[] fn = {"id","answer","dt"};
+        String[] fv = {id,is_success,test_time};
+        try {
+            mydb.insert("statics",fn,fv);
+        }catch (Exception e){
+            Toast.makeText(this,e.toString(),Toast.LENGTH_LONG).show();
+        }
+    }
+
     public String LastLearningTime(){
         mydb =new DatabaseHelper(this);
         String[] fn = {"lt1","lt2","lt3","lt4",
@@ -326,7 +344,7 @@ public class LearnActivity extends AppCompatActivity {
         return info;
     }
     public int UpdateIndex(String last_time,String cur_time,
-                           int last_index){
+                           int last_index) {
 /*
 第一个记忆周期：5分钟
 第二个记忆周期：30分钟
@@ -337,61 +355,31 @@ public class LearnActivity extends AppCompatActivity {
 第七个记忆周期：7天
 第八个记忆周期：15天
  */
-        int[] dtime = {0,5,30,12*60,24*60,2*24*60,4*24*60,
-        7*24*60,15*24*60};
-        String year1 = cur_time.substring(0,4);
-        String month1 = cur_time.substring(4,6);
-        String day1 = cur_time.substring(6,8);
-        String hour1 = cur_time.substring(8,10);
-        String minute1 = cur_time.substring(10,12);
-        String year2 = last_time.substring(0,4);
-        String month2 = last_time.substring(4,6);
-        String day2 = last_time.substring(6,8);
-        String hour2 = last_time.substring(8,10);
-        String minute2 = last_time.substring(10,12);
+        int[] dtime = {0, 5, 30, 12 * 60, 24 * 60, 2 * 24 * 60, 4 * 24 * 60,
+                7 * 24 * 60, 15 * 24 * 60};
+        String year1 = cur_time.substring(0, 4);
+        String month1 = cur_time.substring(4, 6);
+        String day1 = cur_time.substring(6, 8);
+        String hour1 = cur_time.substring(8, 10);
+        String minute1 = cur_time.substring(10, 12);
+        String year2 = last_time.substring(0, 4);
+        String month2 = last_time.substring(4, 6);
+        String day2 = last_time.substring(6, 8);
+        String hour2 = last_time.substring(8, 10);
+        String minute2 = last_time.substring(10, 12);
         int dt1 = (Integer.parseInt(year1) -
-                Integer.parseInt(year2))*365*24*60
+                Integer.parseInt(year2)) * 365 * 24 * 60
                 + (Integer.parseInt(month1) -
-                Integer.parseInt(month2))*30*24*60
+                Integer.parseInt(month2)) * 30 * 24 * 60
                 + (Integer.parseInt(day1) -
-                Integer.parseInt(day2))*24*60
+                Integer.parseInt(day2)) * 24 * 60
                 + (Integer.parseInt(hour1) -
-                Integer.parseInt(hour2))*60
+                Integer.parseInt(hour2)) * 60
                 + (Integer.parseInt(minute1) -
                 Integer.parseInt(minute2));
-        if(dt1<dtime[last_index])
-                return last_index;
-        return min(last_index+1,8);
-    }
-    public String NextLearningTime(String starttime, int year,
-                                int month, int day,
-                                int hour, int min) {
-        String time = "";
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat mSdf = new SimpleDateFormat(
-                "yyyyMMddHHmm");
-        try {
-            cal.setTime(mSdf.parse(starttime));
-            if (year > 0) {
-                cal.add(Calendar.YEAR, year);
-            }
-            if (month > 0) {
-                cal.add(Calendar.MONTH, month);
-            }
-            if (day > 0) {
-                cal.add(Calendar.DAY_OF_YEAR, day);
-            }
-            if (hour > 0) {
-                cal.add(Calendar.HOUR_OF_DAY, hour);
-            }
-            if (min > 0) {
-                cal.add(Calendar.MINUTE, min);
-            }
-            time = mSdf.format(cal.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return time;
+        if (dt1 < dtime[last_index])
+            return last_index;
+        return min(last_index + 1, 8);
     }
 
     public class MyAdapter extends BaseAdapter {
@@ -481,16 +469,24 @@ public class LearnActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String t1 = new Gongju().CurTime();
                 if(listText.get(position).equals(chinese)) {
-                    Toast.makeText(context,
+//                    Toast.makeText(context,
+//                            "答对了，你很棒！",
+//                            Toast.LENGTH_LONG).show();
+                    TastyToast.makeText(getApplicationContext(),
                             "答对了，你很棒！",
-                            Toast.LENGTH_LONG).show();
+                            TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
                     UpdateDbLearning(t1,"1");
+                    InsertDbStatics(id,t1,"1");
                 }
                 else {
-                    Toast.makeText(context,
+//                    Toast.makeText(context,
+//                            "答错了，要继续努力哦！",
+//                            Toast.LENGTH_LONG).show();
+                    TastyToast.makeText(getApplicationContext(),
                             "答错了，要继续努力哦！",
-                            Toast.LENGTH_LONG).show();
+                            TastyToast.LENGTH_LONG, TastyToast.ERROR);
                     UpdateDbLearning(t1,"2");
+                    InsertDbStatics(id,t1,"2");
                 }
                 checkAll();
                 checkReverse();

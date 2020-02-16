@@ -23,32 +23,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //('spell','chinese','learntime','lt1','lt2','lt3','lt4',
-        //'lt5','lt6','lt7','lt8','testtime','tt1','tt2','tt3','tt4',
-        //        'tt5','tt6','tt7','tt8')
-//        String sql = "create table " + TABLE_NAME +
-//                "(id TEXT," +
-//                "spell TEXT," +
-//                "chinese TEXT," +
-//                "learntime TEXT," +
-//                "lt1 TEXT," +
-//                "lt2 TEXT," +
-//                "lt3 TEXT," +
-//                "lt4 TEXT," +
-//                "lt5 TEXT," +
-//                "lt6 TEXT," +
-//                "lt7 TEXT," +
-//                "lt8 TEXT," +
-//                "testtime TEXT," +
-//                "tt1 TEXT," +
-//                "tt2 TEXT," +
-//                "tt3 TEXT," +
-//                "tt4 TEXT," +
-//                "tt5 TEXT," +
-//                "tt6 TEXT," +
-//                "tt7 TEXT," +
-//                "tt8 TEXT)";
-   //     db.execSQL(sql);
     }
 
     @Override
@@ -96,6 +70,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(fname, fvalue);
         db.update(TABLE_NAME, cv, where, whereValue);
+    }
+    //修改操作
+    public void insert(String table,String[] fname, String[] fvalue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        for(int i=0;i<fname.length;i++)
+            cv.put(fname[i], fvalue[i]);
+        db.insert(table, null,cv);
     }
 
     public Cursor select(String id1, String[] fn) {

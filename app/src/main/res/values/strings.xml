@@ -3,6 +3,8 @@
     <string name="main_activity_button1_name">学习</string>
     <string name="main_activity_button2_name">测验</string>
     <string name="download_db">下载单词库</string>
+    <string name="test_mode">测试模式</string>
+    <string name="learn_mode">学习模式</string>
     <string name="data_url">http://192.168.1.12/KET.db</string>
     <string name="mp3_url">http://audio.beingfine.cn/speeches/UK/UK-speech/</string>
 </resources>

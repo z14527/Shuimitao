@@ -6,4 +6,14 @@
         android:orderInCategory="100"
         android:title="@string/download_db"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/test_mode"
+        android:orderInCategory="100"
+        android:title="@string/test_mode"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/learn_mode"
+        android:orderInCategory="100"
+        android:title="@string/learn_mode"
+        app:showAsAction="never"/>
 </menu>
