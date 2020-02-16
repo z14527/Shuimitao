@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void dwonloadDBfile() {
         String data_url = getString(R.string.data_url);
-        DatabaseHelper mydb = new DatabaseHelper(this);
         String db_path = getApplicationContext().
                 getDatabasePath("KET.db").getAbsolutePath();//"/data/data/com.gyq.shuimitao/databases/";//数据库在手机里的路径";
         if (getDownloadFile2Cache(data_url,db_path))
@@ -150,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 class Gongju {
-     public void ShowMsg(Context context, String title, String msg, boolean cancel, int type){
+    public void ShowMsg(Context context, String title, String msg, boolean cancel, int type){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);    //设置对话框标题
         builder.setIcon(android.R.drawable.btn_star);   //设置对话框标题前的图标
@@ -186,4 +185,32 @@ class Gongju {
         Date date = new Date(System.currentTimeMillis());
         return simpleDateFormat.format(date);
     }
+    public Boolean getDownloadFile2Cache(String url,
+                                         String filePath) {
+        Boolean ret = true;
+        try {
+            HttpGet httpRequest = new HttpGet(url);
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response = (HttpResponse) httpclient.execute(httpRequest);
+            HttpEntity entity = response.getEntity();
+            BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(entity);
+            InputStream is = bufferedHttpEntity.getContent();
+            FileOutputStream fos = new FileOutputStream(filePath);
+            byte buf[] = new byte[1024];
+            int numread;
+            while ((numread = is.read(buf)) != -1) {
+                fos.write(buf, 0, numread);
+            }
+            fos.close();
+            is.close();
+        } catch (IOException e) {
+            ret = false;
+            e.printStackTrace();
+        } catch (Exception e) {
+            ret = false;
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
 }

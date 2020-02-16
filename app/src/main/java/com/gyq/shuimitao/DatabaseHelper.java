@@ -26,28 +26,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //('spell','chinese','learntime','lt1','lt2','lt3','lt4',
         //'lt5','lt6','lt7','lt8','testtime','tt1','tt2','tt3','tt4',
         //        'tt5','tt6','tt7','tt8')
-        String sql = "create table " + TABLE_NAME +
-                "(id TEXT," +
-                "spell TEXT," +
-                "chinese TEXT," +
-                "learntime TEXT," +
-                "lt1 TEXT," +
-                "lt2 TEXT," +
-                "lt3 TEXT," +
-                "lt4 TEXT," +
-                "lt5 TEXT," +
-                "lt6 TEXT," +
-                "lt7 TEXT," +
-                "lt8 TEXT," +
-                "testtime TEXT," +
-                "tt1 TEXT," +
-                "tt2 TEXT," +
-                "tt3 TEXT," +
-                "tt4 TEXT," +
-                "tt5 TEXT," +
-                "tt6 TEXT," +
-                "tt7 TEXT," +
-                "tt8 TEXT)";
+//        String sql = "create table " + TABLE_NAME +
+//                "(id TEXT," +
+//                "spell TEXT," +
+//                "chinese TEXT," +
+//                "learntime TEXT," +
+//                "lt1 TEXT," +
+//                "lt2 TEXT," +
+//                "lt3 TEXT," +
+//                "lt4 TEXT," +
+//                "lt5 TEXT," +
+//                "lt6 TEXT," +
+//                "lt7 TEXT," +
+//                "lt8 TEXT," +
+//                "testtime TEXT," +
+//                "tt1 TEXT," +
+//                "tt2 TEXT," +
+//                "tt3 TEXT," +
+//                "tt4 TEXT," +
+//                "tt5 TEXT," +
+//                "tt6 TEXT," +
+//                "tt7 TEXT," +
+//                "tt8 TEXT)";
    //     db.execSQL(sql);
     }
 
@@ -111,6 +111,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    public Cursor select(String selection,String[] where,String[] fn) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, fn, selection, where, null, null, null);
+        return cursor;
+    }
+
     public Cursor lselect(String key, String[] fn) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, fn, "name like ?", new String[]{"%" + key + "%"}, null, null, null);
@@ -123,4 +129,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        Cursor cursor = db.rawQuery("select " + fn.toString() + " from " + TABLE_NAME + " where name like ? or ct like ?", new String[]{"%" + key + "%", "%" + key + "%"});
         return cursor;
     }
+    public Cursor rselect(String selection,String[] args) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selection,args);
+        return cursor;
+    }
+
 }
