@@ -50,6 +50,7 @@ public class LearnActivity extends AppCompatActivity {
     private String id = "";
     private boolean bp = false;
     private boolean bps = false;
+    private static int nw = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +64,26 @@ public class LearnActivity extends AppCompatActivity {
         mTextView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(bps) {
+                String[] sps = spell.split(" ");
+                if(bps && sps.length<2) {
                     mediaPlayer.start();
                     return;
                 }
                 String mp3_url = getString(R.string.mp3_url);
-                if(spell.contains(" "))
-                    mp3_url+=spell.split(" ")[0];
+                if(spell.contains(" ")) {
+                    if(nw <sps.length ) {
+                        if(bp){
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                            bp = false;
+                            bps = false;
+                        }
+                        mp3_url += sps[nw];
+                        nw++;
+                        if(nw >= sps.length)
+                            nw = 0;
+                    }
+                }
                 else
                     mp3_url+=spell;
                 mp3_url+=".mp3";
@@ -109,6 +123,7 @@ public class LearnActivity extends AppCompatActivity {
                     mediaPlayer.release();
                     bp = false;
                     bps = false;
+                    nw = 0;
                 }
                 process();
             }
