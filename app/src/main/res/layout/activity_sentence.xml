@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id = "@+id/sspell"
+        android:layout_width="match_parent"
+        android:background="@drawable/upbackground"
+        android:textAlignment="center"
+        android:textColor="#fff00000"
+        android:layout_height="160sp" />
+    <ListView
+        android:id="@+id/slistView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:layout_weight="1">
+    </ListView>
+    <LinearLayout
+        android:id="@+id/LinearLayout04"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/stv_info"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="160dip"
+            android:layout_marginLeft="10dip"
+            android:layout_height="60dp"
+            android:text="learn information"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/stv_forword"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="160dip"
+            android:layout_marginLeft="30dip"
+            android:layout_height="60dp"
+            android:text="next"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+</LinearLayout>
+

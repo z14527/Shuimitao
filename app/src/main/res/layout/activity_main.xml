@@ -30,7 +30,7 @@
             android:id="@+id/tableRow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="100dp"
             android:divider="#00000000"
             android:dividerHeight="0dip">
             <ImageButton
@@ -48,5 +48,35 @@
                 android:layout_weight="1"
                 android:background="@drawable/statics" />
          </TableRow>
+    </TableLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout1"
+        android:layout_below="@+id/linearLayout1"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:divider="#00000000"
+            android:dividerHeight="0dip">
+            <ImageButton
+                android:id="@+id/imgSLearn"
+                android:layout_width="match_parent"
+                android:layout_marginTop="100pt"
+                android:layout_height="50pt"
+                android:layout_weight="1"
+                android:background="@drawable/slearn" />
+            <ImageButton
+                android:id="@+id/imgSStatics"
+                android:layout_width="match_parent"
+                android:layout_marginTop="100pt"
+                android:layout_height="50pt"
+                android:layout_weight="1"
+                android:background="@drawable/sstatics" />
+        </TableRow>
     </TableLayout>
 </android.support.constraint.ConstraintLayout>

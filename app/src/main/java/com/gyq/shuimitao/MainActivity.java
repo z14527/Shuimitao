@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
@@ -75,15 +76,19 @@ public class MainActivity extends AppCompatActivity {
     public static Context mainContext = null;
     public static int mode = 0;
     public static ImageButton btLearn = null;
+    public static ImageButton btSLearn = null;
     public static Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             int what = msg.what;
             switch (what) {
                 case 1:
-                    if (mode == 0)
+                    if (mode == 0) {
                         btLearn.setImageResource(R.drawable.learn);
-                    else
+                        btSLearn.setImageResource(R.drawable.slearn);
+                    }else {
                         btLearn.setImageResource(R.drawable.test);
+                        btSLearn.setImageResource(R.drawable.stest);
+                    }
                     break;
             }
         }
@@ -117,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btSLearn = (ImageButton) findViewById(R.id.imgSLearn);
+        btSLearn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this,SentenceActivity.class);
+                startActivity(intent);
+            }
+        });
         ImageButton btStatics = (ImageButton) findViewById(R.id.imgStatics);
         btStatics.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -138,7 +151,27 @@ public class MainActivity extends AppCompatActivity {
                             "学习统计",info,false,-1);
             }
         });
-        CheckMode();
+        ImageButton btSStatics = (ImageButton) findViewById(R.id.imgSStatics);
+        btSStatics.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String info = "";
+                String info1 = SentenceStatics(1);
+                String info2 = SentenceStatics(2);
+                String info3 = SentenceStatics(3);
+                String info4 = SentenceStatics(4);
+                if(!info1.equals(null))
+                    info += info1+"\n";
+                if(!info2.equals(null))
+                    info += info2+"\n";
+                if(!info3.equals(null))
+                    info += info3+"\n";
+                if(!info4.equals(null))
+                    info += info4+"\n";
+                new Gongju().ShowMsg(MainActivity.this,
+                        "学习统计",info,false,-1);
+            }
+        });        CheckMode();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -321,10 +354,98 @@ public class MainActivity extends AppCompatActivity {
         info+="得分 "+sc+" 分。";
         return info;
     }
+    public String SentenceStatics(int type){
+        mydb =new DatabaseHelper(this);
+        String info = "";
+        Cursor c1;
+        String t1 = new Gongju().CurTime();
+        String t11 = new Gongju().NextLearningTime(t1,0,0,
+                0,0,1);
+        String t2 = "";
+        if(type==1)//一天内
+            t2 = new Gongju().NextLearningTime(t1,0,0,
+                    -1,0,0);
+        else if(type==2)//一周内
+            t2 = new Gongju().NextLearningTime(t1,0,0,
+                    -7,0,0);
+        else if(type==3)//一月内
+            t2 = new Gongju().NextLearningTime(t1,0,-1,
+                    0,0,0);
+        else if(type==4)//一年内
+            t2 = new Gongju().NextLearningTime(t1,-1,0,
+                    0,0,0);
+        else
+            return info;
+        int nw = 0;
+        int n1 = 0;
+        int n2 = 0;
+        t1 = t11;
+        try {
+            String sel = "select spell from sentence where " +
+                    "(lt1<? and lt1>?) or " +
+                    "(lt2<? and lt2>?) or " +
+                    "(lt3<? and lt3>?) or " +
+                    "(lt4<? and lt4>?) or " +
+                    "(lt5<? and lt5>?) or " +
+                    "(lt6<? and lt6>?) or " +
+                    "(lt7<? and lt7>?) or " +
+                    "(lt8<? and lt8>?)";
+            String[] where ={t1,t2,t1,t2,t1,t2,t1,t2,
+                    t1,t2,t1,t2,t1,t2,t1,t2};
+            c1 = mydb.rselect(sel,where);
+            while (c1.moveToNext()) {
+                nw ++;
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return null;
+        }
+        try {
+            String sel = "select id from sstatics where " +
+                    "(dt<? and dt>?) and answer=?";
+            String[] where ={t1,t2,"1"};
+            c1 = mydb.rselect(sel,where);
+            while (c1.moveToNext()) {
+                n1 ++;
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return null;
+        }
+        try {
+            String sel = "select id from sstatics where " +
+                    "(dt<? and dt>?) and answer=?";
+            String[] where ={t1,t2,"2"};
+            c1 = mydb.rselect(sel,where);
+            while (c1.moveToNext()) {
+                n2 ++;
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_LONG).show();
+            return null;
+        }
+        if(type==1)
+            info += "你近一天内共学习了 " + nw + " 个单词，";
+        else if(type==2)
+            info+="你近一周内共学习了 "+nw+" 个单词，";
+        else if(type==3)
+            info+="你近一个月内共学习了 "+nw+" 个单词，";
+        else if(type==4)
+            info+="你近一年内共学习了 "+nw+" 个单词，";
+        int sc = 0;
+        if(n1+n2>0)
+            sc = n1*100/(n1+n2);
+        info+="答对了 "+n1+" 次，";
+        info+="答错了 "+n2+" 次，";
+        info+="得分 "+sc+" 分。";
+        return info;
+    }
     public static void dwonloadDBfile() {
         String data_url = mainContext.getString(R.string.data_url);
         String db_path = mainContext.
                 getDatabasePath("KET.db").getAbsolutePath();//"/data/data/com.gyq.shuimitao/databases/";//数据库在手机里的路径";
+        String bak_file = Environment.getExternalStorageDirectory().getPath()+"/download/KET.db";
+        new Gongju().CopySdcardFile(db_path,bak_file);
         if (getDownloadFile2Cache(data_url,db_path))
             Toast.makeText(mainContext, "下载成功！", Toast.LENGTH_SHORT).show();
         else
@@ -377,6 +498,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 mode = 1;
                 btLearn.setBackgroundResource(R.drawable.test);
+                btSLearn.setBackgroundResource(R.drawable.stest);
             }
         }
     }

@@ -71,6 +71,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(fname, fvalue);
         db.update(TABLE_NAME, cv, where, whereValue);
     }
+    public void update(String table,String id1, String fname, String fvalue) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String where = "id = ?";
+        String[] whereValue = {id1};
+
+        ContentValues cv = new ContentValues();
+        cv.put(fname, fvalue);
+        db.update(table, cv, where, whereValue);
+    }
     //修改操作
     public void insert(String table,String[] fname, String[] fvalue) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -86,7 +95,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_NAME, fn, "id=?", whereValue, null, null, null);
         return cursor;
     }
-
+    public Cursor tselect(String table1,String id1, String[] fn) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] whereValue = {id1};
+        Cursor cursor = db.query(table1, fn, "id=?", whereValue, null, null, null);
+        return cursor;
+    }
     public Cursor select(String[] fn) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, fn, null, null, null, null, null);
